@@ -1,6 +1,7 @@
 package com.lu2code.hibernate.demo.entity;
 
-import java.util.ArrayList;
+
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,9 +19,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="student")
 public class Student {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
@@ -33,16 +34,20 @@ public class Student {
 	@Column(name="email")
 	private String email;
 	
-
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "instructor", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.DETACH, CascadeType.REFRESH })
+	@ManyToMany(fetch=FetchType.LAZY,
+			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+			 CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinTable(
-			name = "course_student",
-			joinColumns = @JoinColumn(name = "student_id"),
-			inverseJoinColumns = @JoinColumn(name = "course_id"))
+			name="course_student",
+			joinColumns=@JoinColumn(name="student_id"),
+			inverseJoinColumns=@JoinColumn(name="course_id")
+			)	
 	private List<Course> courses;
+
 	
-	public Student() {}
+	public Student() {
+		
+	}
 
 	public Student(String firstName, String lastName, String email) {
 		this.firstName = firstName;
@@ -81,14 +86,6 @@ public class Student {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public void addCourse(Course theCourse) {
-		if(theCourse == null) {
-			courses = new ArrayList<Course>();
-		}
-		
-		courses.add(theCourse);
-	}
 
 	public List<Course> getCourses() {
 		return courses;
@@ -101,6 +98,11 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
-	}	
+	}
+	
 	
 }
+
+
+
+

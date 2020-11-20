@@ -7,8 +7,10 @@ import org.hibernate.cfg.Configuration;
 import com.lu2code.hibernate.demo.entity.Course;
 import com.lu2code.hibernate.demo.entity.Instructor;
 import com.lu2code.hibernate.demo.entity.InstructorDetail;
+import com.lu2code.hibernate.demo.entity.Review;
+import com.lu2code.hibernate.demo.entity.Student;
 
-public class CreateCoursesDemo {
+public class AddCoursesForMayDemo {
 
 	public static void main(String[] args) {
 
@@ -18,6 +20,8 @@ public class CreateCoursesDemo {
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
 				.addAnnotatedClass(Course.class)
+				.addAnnotatedClass(Review.class)
+				.addAnnotatedClass(Student.class)
 				.buildSessionFactory();
 		// create session
 		Session session = factory.getCurrentSession();
@@ -28,22 +32,26 @@ public class CreateCoursesDemo {
 			// start transaction
 			session.beginTransaction();
 			
-			// get the instructor from db
-			int theId = 1;
-			Instructor tempInstructor = session.get(Instructor.class, theId);
+			// get the student japa from databse
+			int theStudent = 2;
+			Student tempStudent = session.get(Student.class, theStudent);
 			
-			//create some courses
-			Course tempCourse1 = new Course("Quarkus Dev");
-			Course tempCourse2 = new Course("K8s Devops");
+			System.out.println("\n Loaded student: " + tempStudent);
+			System.out.println("Courses: "+ tempStudent.getCourses());			
 			
-			// add courses to instructor
-			tempInstructor.add(tempCourse1);
-			tempInstructor.add(tempCourse2);
+			// create more courses
+			Course temCourse1 = new Course("Rubik's CUbe - How to Speed Cube");
+			Course temCourse2 = new Course("Atari 2600 - Game Development");
+			
+			// add student to courses
+			temCourse1.addStudent(tempStudent);
+			temCourse2.addStudent(tempStudent);
 			
 			// save the courses
-			session.save(tempCourse1);
-			session.save(tempCourse2);
 			
+			System.out.println("\n Saving The courses");
+			session.save(temCourse1);
+			session.save(temCourse2);
 
 			// commit transaction
 			session.getTransaction().commit();
